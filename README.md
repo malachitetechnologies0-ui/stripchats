@@ -1,110 +1,90 @@
-# Stripchats Demo
+# CreatorLive Demo
 
-Stripchats Demo is a safe, production-quality UI/UX wireframe and clickable prototype for an 18+ live-streaming creator marketplace. It is built for founder presentation, developer handoff, UI/UX review, QA walkthroughs, and Vercel deployment.
+CreatorLive Demo is a safe, non-explicit live creator marketplace prototype inspired by modern live-streaming marketplace patterns. It is built for boss presentation, client demos, UI/UX review, QA reference, and future backend planning.
 
 ## Safety Note
 
-This project uses placeholder content only. It contains no explicit adult content, no real creator media, no real payment keys, and no production payment processing. All media blocks are safe gradient/blur placeholders and all payment actions are mock/demo only.
-
-## Tech Stack
-
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Lucide React icons
-- Zustand local state
-- Mock JSON/TypeScript data
-- Vercel-ready configuration
+This is a placeholder-only learning prototype. It does not copy Stripchat branding, logos, copyrighted assets, text, images, or adult content. All creator media is represented with safe gradient placeholders, blurred avatar blocks, neutral labels, and dummy names. Login, wallet, payment, KYC, streaming, chat, payout, and moderation are mock/local only.
 
 ## Features
 
-- Landing page with role selection
-- 18+ age gate with localStorage confirmation
-- Viewer discovery, search, profile, favorites, messages, live room, wallet, paid unlocks
-- Mock token wallet and mock payment gateway with success, failed, and pending states
-- Tip modal, tip menu, group show, ticket show, and private show demo
-- Private show active state with timer and demo per-interval token deduction
-- Creator onboarding with signup, email, KYC, agreement, and approval states
-- Creator dashboard, profile setup, broadcast center, live-room controls, pricing, tip menu, goals, bots, earnings, payout, and moderation
-- Admin dashboard, users, models/KYC, token ledger, payments/payouts, moderation, and analytics
-- Developer Notes panel on every important page
-- Full clickable prototype flow map
+- Landing page and role selection for User, Creator, and Admin demos
+- 18+ safe confirmation with localStorage gating for user routes
+- Dummy login and signup with role-based redirect
+- User discovery, search, creator profile, public live room, wallet, messages, favorites, and history
+- Mock token wallet with success, failed, and pending payment states
+- Tip modal, tip menu, group show, ticket show, fan club, paid album, paid message, and private show demo
+- Private show active screen with timer and demo token deduction
+- Creator onboarding, KYC states, dashboard, profile setup, broadcast center, live control panel, pricing, automation, earnings, payout, and moderation
+- Admin dashboard, user management, creator/KYC review, token ledger, payment/payout controls, moderation, and analytics
+- Developer Notes panels on important pages
+- Prototype flow map and visible state references
 
 ## User Flow
 
 1. Open `/`.
-2. Choose User / Viewer Demo.
+2. Choose **Open User Demo**.
 3. Confirm age on `/age-gate`.
-4. Browse `/user`, search creators, favorite profiles, open model profiles, and enter live rooms.
-5. Use mock token wallet on `/user/wallet`.
-6. Try tips, paid album unlocks, paid private messages, ticket/group/private show actions.
+4. Browse `/user`, search creators, open `/user/creator/[id]`, and enter `/user/live/[id]`.
+5. Try wallet recharge on `/user/wallet`.
+6. Test messages, paid unlocks, favorites, history, tips, ticket/group/private flows.
 
-## Model Flow
+## Creator Flow
 
 1. Open `/model/onboarding`.
 2. Walk through signup, email verification, KYC upload, agreement, and approval states.
-3. Visit `/model` for dashboard metrics.
-4. Configure profile, broadcast settings, pricing, tip menu, goals, bots, earnings, payout, and moderation.
+3. Use `/model` dashboard and quick actions.
+4. Configure profile, broadcast, live-room controls, pricing, automation, earnings, payout, and moderation.
 
 ## Admin Flow
 
 1. Open `/admin`.
-2. Review operational stats and navigate through admin sections.
-3. Manage users, models, KYC decisions, token ledger, payments, payouts, reports, global moderation, and analytics.
+2. Review platform stats and navigate through admin sections.
+3. Manage users, creators/KYC, token ledger, payments/payouts, reports, and analytics.
 
 ## Mock Payment Gateway
 
-The wallet uses `src/lib/mockPayment.ts` and never calls a real payment gateway.
+The wallet uses `src/lib/mockPayment.ts`. It never calls a real gateway and never includes secret keys.
 
 Mock states:
 
-- Success: tokens are added to local wallet state.
-- Failed: wallet balance stays unchanged.
-- Pending: transaction is recorded as pending/processing for demo review.
+- Success: adds tokens to local wallet and transaction history.
+- Failed: keeps balance unchanged and shows failed state.
+- Pending: records a processing-style state for review.
 
-Production notes are included in code comments for:
+Future gateway comments are included for:
 
-- Razorpay order/signature verification
-- Stripe PaymentIntent and webhook fulfillment
-- PayPal order capture and webhook reconciliation
-- Webhook signature verification
-- Transaction ledger idempotency
-- Refund handling with adjustment ledger rows
+- Razorpay order creation and backend signature verification
+- Stripe Checkout/PaymentIntent and webhook signature verification
+- PayPal order approval/capture
+- Idempotency keys
+- Refund adjustment ledger rows
+- Backend-only wallet updates
 
 ## Folder Structure
 
 ```text
 src/
   app/
+    auth/
     age-gate/
     user/
     model/
     admin/
     prototype-map/
   components/
+    common/
+    user/
+    model/
+    admin/
     layout.tsx
     pages.tsx
     ui.tsx
   data/
-    admin.ts
-    creators.ts
-    tokenPackages.ts
-    transactions.ts
-    users.ts
   lib/
-    mockAuth.ts
-    mockKyc.ts
-    mockPayment.ts
-    mockPayout.ts
-    store.ts
-    tokenLedger.ts
-    wallet.ts
+  store/
   styles/
-    globals.css
   types/
-    index.ts
 ```
 
 ## Setup
@@ -131,12 +111,18 @@ http://localhost:3000
 npm run build
 ```
 
+## Lint
+
+```bash
+npm run lint
+```
+
 ## Environment Variables
 
-Copy `.env.example` to `.env.local` if needed.
+Use `.env.example` as a template:
 
 ```env
-NEXT_PUBLIC_APP_NAME=Stripchats Demo
+NEXT_PUBLIC_APP_NAME=CreatorLive Demo
 NEXT_PUBLIC_RAZORPAY_KEY=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=
@@ -146,54 +132,51 @@ Do not commit real secrets.
 
 ## Vercel Deployment
 
-1. Push this repository to GitHub.
-2. Open Vercel and import `Shahrukh492/stripchats`.
-3. Use these settings:
-   - Framework Preset: Next.js
-   - Install Command: `npm install`
-   - Build Command: `npm run build`
-   - Output Directory: leave default
-4. Add any public demo environment variables from `.env.example`.
-5. Deploy.
+Settings:
 
-## GitHub Upload / Push Commands
+- Framework Preset: Next.js
+- Install Command: `npm install`
+- Build Command: `npm run build`
+- Output Directory: default / blank
 
-For a fresh local repository:
+CLI:
+
+```bash
+npx vercel --prod
+```
+
+## GitHub Commands
 
 ```bash
 git init
 git add .
-git commit -m "Initial commit: Stripchats demo website prototype"
+git commit -m "Initial commit: CreatorLive demo marketplace prototype"
 git branch -M main
-git remote add origin https://github.com/Shahrukh492/stripchats.git
+git remote add origin <YOUR_REPOSITORY_URL>
 git push -u origin main
 ```
 
-If the remote already exists:
+For this existing repo:
 
 ```bash
-git remote set-url origin https://github.com/Shahrukh492/stripchats.git
-git push -u origin main
-```
-
-Alternative GitHub CLI flow:
-
-```bash
-gh repo clone Shahrukh492/stripchats
-cd stripchats
-git add .
-git commit -m "Initial commit: Stripchats demo website prototype"
+git remote set-url origin https://github.com/malachitetechnologies0-ui/stripchats.git
 git push -u origin main
 ```
 
 ## Future Backend Integration Notes
 
-- Replace Zustand/localStorage with authenticated server state.
-- Add real age/compliance session handling.
-- Add backend wallet service with immutable token ledger.
-- Create payment intents/orders server-side only.
-- Fulfill payments from verified webhooks only.
+- Replace localStorage/Zustand with authenticated server state.
+- Add real auth with secure sessions and role-based permissions.
+- Add compliance/age-gate sessions on the backend.
+- Add immutable wallet ledger and backend-only token updates.
+- Fulfill payments only after verified Razorpay/Stripe/PayPal webhooks.
 - Add KYC provider integration and secure document storage.
-- Add WebSocket services for chat, live room state, tips, and private show sessions.
-- Add role-based admin permissions and audit logging.
-- Add media moderation, entitlement checks, refund workflows, and fraud monitoring.
+- Add live streaming orchestration with WebRTC/RTMP and room state services.
+- Add WebSocket chat, moderation, bot automation, and live tip events.
+- Add admin audit logs, fraud monitoring, refund workflows, and payout reconciliation.
+
+## Limitations
+
+- Frontend-only demo.
+- No real auth, database, payment gateway, KYC provider, streaming server, or adult content.
+- All data, payments, wallet updates, chat, reports, and payouts are mock/local state.

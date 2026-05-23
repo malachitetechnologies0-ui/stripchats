@@ -52,6 +52,7 @@ function makeTransaction(
     type,
     userId: demoUser.id,
     modelId,
+    creatorId: modelId,
     tokenAmount,
     status,
     createdAt: new Date().toISOString(),
@@ -131,7 +132,7 @@ export const useDemoStore = create<DemoState>()(
       requestPayout: () => set({ payoutStatus: "processing" })
     }),
     {
-      name: "stripchats-demo-store",
+      name: "creatorlive-demo-store",
       partialize: (state) => ({
         walletBalance: state.walletBalance,
         favorites: state.favorites,

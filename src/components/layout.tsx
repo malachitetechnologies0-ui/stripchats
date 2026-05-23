@@ -29,7 +29,8 @@ const userNav: NavItem[] = [
   { href: "/user/search", label: "Search", icon: Search },
   { href: "/user/favorites", label: "Favorites", icon: Heart },
   { href: "/user/wallet", label: "Wallet", icon: Wallet },
-  { href: "/user/messages", label: "Messages", icon: MessageSquare }
+  { href: "/user/messages", label: "Messages", icon: MessageSquare },
+  { href: "/user/history", label: "History", icon: BarChart3 }
 ];
 
 const modelNav: NavItem[] = [
@@ -37,6 +38,7 @@ const modelNav: NavItem[] = [
   { href: "/model/profile", label: "Profile", icon: User },
   { href: "/model/broadcast", label: "Broadcast", icon: Radio },
   { href: "/model/pricing", label: "Pricing", icon: Coins },
+  { href: "/model/automation", label: "Automation", icon: Settings },
   { href: "/model/earnings", label: "Earnings", icon: BarChart3 },
   { href: "/model/moderation", label: "Moderation", icon: Shield }
 ];
@@ -44,11 +46,14 @@ const modelNav: NavItem[] = [
 const adminNav: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/models", label: "Models / KYC", icon: User },
+  { href: "/admin/models", label: "Creators", icon: User },
+  { href: "/admin/models", label: "KYC Review", icon: Shield },
   { href: "/admin/token-ledger", label: "Token Ledger", icon: Coins },
   { href: "/admin/payments", label: "Payments", icon: Wallet },
+  { href: "/admin/payments", label: "Payouts", icon: Wallet },
   { href: "/admin/moderation", label: "Moderation", icon: Shield },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 }
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin", label: "Settings", icon: Settings }
 ];
 
 export function Brand() {
@@ -56,7 +61,7 @@ export function Brand() {
     <Link href="/" className="flex items-center gap-3">
       <div className="h-10 w-10 rounded-2xl bg-brand-gradient shadow-glow" />
       <div>
-        <div className="font-black">Stripchats Demo</div>
+        <div className="font-black">CreatorLive Demo</div>
         <div className="text-xs text-white/45">Safe wireframe prototype</div>
       </div>
     </Link>

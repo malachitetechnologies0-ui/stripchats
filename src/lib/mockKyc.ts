@@ -10,6 +10,15 @@ export function getKycStatus(modelId: string) {
   return kycStatuses.get(modelId) ?? "pending";
 }
 
+export function submitKyc(modelId: string, data: { idUploaded: boolean; selfieUploaded: boolean }) {
+  if (!data.idUploaded || !data.selfieUploaded) {
+    return { modelId, status: getKycStatus(modelId), error: "ID and selfie uploads are required." };
+  }
+
+  kycStatuses.set(modelId, "pending");
+  return { modelId, status: "pending" as const, message: "KYC submitted for review." };
+}
+
 export function approveKyc(modelId: string) {
   kycStatuses.set(modelId, "approved");
   return { modelId, status: "approved" as const };

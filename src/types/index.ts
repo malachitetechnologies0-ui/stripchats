@@ -38,6 +38,8 @@ export interface Creator {
   viewerCount: number;
   tokenRatePrivate: number;
   tokenRateExclusive: number;
+  groupShowRate: number;
+  ticketShowPrice: number;
   fanClubPrice: number;
   goal: {
     title: string;
@@ -54,10 +56,12 @@ export interface Creator {
 export interface User {
   id: string;
   name: string;
+  email: string;
   walletBalance: number;
   favorites: string[];
   paymentVerified: boolean;
   blockedUsers: string[];
+  role: "user" | "creator" | "admin";
 }
 
 export interface Transaction {
@@ -65,6 +69,7 @@ export interface Transaction {
   type: TransactionType;
   userId: string;
   modelId?: string;
+  creatorId?: string;
   tokenAmount: number;
   status: PaymentStatus;
   createdAt: string;
@@ -103,4 +108,22 @@ export interface NavItem {
   href: string;
   label: string;
   icon: LucideIcon;
+}
+
+export interface Report {
+  id: string;
+  reporterId: string;
+  reportedId: string;
+  type: "spam" | "harassment" | "policy" | "payment" | "safety";
+  reason: string;
+  status: "open" | "warned" | "muted" | "banned" | "dismissed";
+  createdAt: string;
+}
+
+export interface MessageThread {
+  id: string;
+  creatorId: string;
+  title: string;
+  lastMessage: string;
+  lockedMediaPrice?: number;
 }

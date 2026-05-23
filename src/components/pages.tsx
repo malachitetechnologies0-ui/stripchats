@@ -34,7 +34,7 @@ import { useState } from "react";
 import { adminStats, chartBars } from "@/data/admin";
 import { creators, getCreator } from "@/data/creators";
 import { tokenPackages } from "@/data/tokenPackages";
-import { saveAgeConfirmation } from "@/lib/mockAuth";
+import { loginDemoUser, saveAgeConfirmation, signupDemoUser } from "@/lib/mockAuth";
 import { approveKyc, rejectKyc } from "@/lib/mockKyc";
 import { approvePayout, holdPayout, rejectPayout } from "@/lib/mockPayout";
 import { useDemoStore } from "@/lib/store";
@@ -59,6 +59,7 @@ import {
   PaymentCheckoutModal,
   PayoutStatusBadge,
   PrivateShowModal,
+  PrototypeFlowCard,
   RechargePrompt,
   ReportModal,
   RoleCard,
@@ -104,7 +105,7 @@ export function LandingPage() {
           <Link href="/" className="flex items-center gap-3">
             <div className="h-11 w-11 rounded-2xl bg-brand-gradient shadow-glow" />
             <div>
-              <div className="font-black">Stripchats Demo</div>
+              <div className="font-black">CreatorLive Demo</div>
               <div className="text-xs text-white/45">Safe creator marketplace prototype</div>
             </div>
           </Link>
@@ -113,12 +114,18 @@ export function LandingPage() {
           </Link>
         </nav>
         <PageHeader
-          eyebrow="Business-ready UI/UX wireframe"
-          title="A safe live-streaming creator marketplace demo."
-          description="Explore viewer, creator, and platform-admin flows with mock wallet, mock payments, live-room UX, paid unlocks, moderation, KYC, analytics, and developer notes."
+          eyebrow="CreatorLive Demo"
+          title="Safe live creator marketplace prototype"
+          description="A premium dark-theme learning prototype for viewer, creator, and admin workflows with mock wallet, mock payments, live-room UX, paid unlocks, moderation, KYC, analytics, and developer notes."
         >
           <DemoNotice />
         </PageHeader>
+        <div className="mb-8 flex flex-wrap gap-3">
+          <Link href="/age-gate" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-brand-gradient px-5 text-sm font-bold">Open User Demo</Link>
+          <Link href="/model/onboarding" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] px-5 text-sm font-bold">Open Creator Demo</Link>
+          <Link href="/admin" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] px-5 text-sm font-bold">Open Admin Demo</Link>
+          <Link href="/auth/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] px-5 text-sm font-bold">Dummy Login</Link>
+        </div>
         <div className="grid gap-5 lg:grid-cols-3">
           <RoleCard
             title="User / Viewer Demo"
@@ -142,6 +149,76 @@ export function LandingPage() {
             bullets={["Admin dashboard", "Token ledger", "KYC and payout controls"]}
           />
         </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+          {["Live discovery", "Token wallet", "Dummy payment gateway", "Creator dashboard", "Admin moderation", "Payout simulation"].map((feature) => (
+            <Card key={feature} className="text-sm font-semibold text-white/75">{feature}</Card>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+export function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("viewer@example.com");
+  const [password, setPassword] = useState("demo123");
+  const [message, setMessage] = useState("");
+
+  const submit = () => {
+    const result = loginDemoUser(email, password);
+    setMessage(result.message);
+    if (result.ok) router.push("/age-gate");
+  };
+
+  return (
+    <main className="grid min-h-screen place-items-center bg-soft-grid px-4 py-8">
+      <div className="w-full max-w-xl space-y-5">
+        <Card className="space-y-4 p-8">
+          <h1 className="text-4xl font-black">Login to CreatorLive Demo</h1>
+          <p className="text-white/60">Dummy localStorage login only. No backend authentication is connected.</p>
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+          <GradientButton className="w-full" onClick={submit}>Login</GradientButton>
+          <Button className="w-full" onClick={() => router.push("/user")}>Continue as demo user</Button>
+          <Link href="/auth/signup" className="block text-center text-sm text-white/60">Create demo account</Link>
+          {message ? <SuccessState title="Auth state" message={message} /> : null}
+        </Card>
+        <DeveloperNotes note={note({ purpose: "Dummy login with localStorage-only auth state.", role: "User / Creator", buttons: ["Login", "Continue as demo user", "Create account"], actions: ["Validate fields", "Save mock user", "Redirect to age gate or dashboard"], api: ["POST /auth/login in production"], businessRule: "No real credentials or sessions are used in this demo." })} />
+      </div>
+    </main>
+  );
+}
+
+export function SignupPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ name: "Demo User", email: "demo@example.com", password: "demo123", confirmPassword: "demo123", role: "user" as "user" | "creator" | "admin" });
+  const [message, setMessage] = useState("");
+
+  const submit = () => {
+    const result = signupDemoUser(form);
+    setMessage(result.message);
+    if (result.ok) router.push(form.role === "creator" ? "/model/onboarding" : "/age-gate");
+  };
+
+  return (
+    <main className="grid min-h-screen place-items-center bg-soft-grid px-4 py-8">
+      <div className="w-full max-w-xl space-y-5">
+        <Card className="space-y-4 p-8">
+          <h1 className="text-4xl font-black">Create demo account</h1>
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} />
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Password" type="password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} />
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" placeholder="Confirm password" type="password" value={form.confirmPassword} onChange={(event) => setForm({ ...form, confirmPassword: event.target.value })} />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {(["user", "creator"] as const).map((role) => (
+              <Button key={role} className={form.role === role ? "border-rose-300/40 bg-rose-400/15" : ""} onClick={() => setForm({ ...form, role })}>{role}</Button>
+            ))}
+          </div>
+          <GradientButton className="w-full" onClick={submit}>Create account</GradientButton>
+          {message ? (message.includes("required") || message.includes("match") ? <ErrorState title="Signup validation" message={message} /> : <SuccessState title="Signup state" message={message} />) : null}
+        </Card>
+        <DeveloperNotes note={note({ purpose: "Dummy signup with role selection and local state validation.", role: "User / Creator", buttons: ["Create account", "Role selection"], actions: ["Validate required fields", "Redirect user to age gate", "Redirect creator to onboarding"], api: ["POST /auth/signup in production"] })} />
       </div>
     </main>
   );
@@ -183,7 +260,7 @@ export function AgeGatePage() {
                     router.push("/user");
                   }}
                 >
-                  <CheckCircle2 size={17} /> I am 18+ / Enter
+                  <CheckCircle2 size={17} /> I am 18+ / Enter Demo
                 </GradientButton>
                 <button
                   className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.1]"
@@ -200,7 +277,7 @@ export function AgeGatePage() {
             note={note({
               purpose: "Block all viewer content until legal-age confirmation is stored.",
               role: "User / Viewer",
-              buttons: ["I am 18+ / Enter", "Exit"],
+              buttons: ["I am 18+ / Enter Demo", "Exit"],
               actions: ["Enter writes localStorage and redirects to /user", "Exit shows safe exit message"],
               api: ["POST /compliance/age-confirmation in production"],
               businessRule: "No creator content should be fetched until age confirmation passes."
@@ -222,7 +299,7 @@ export function UserHomePage() {
         </div>
       </PageHeader>
       <div className="mb-6 flex flex-wrap gap-2">
-        {["Top Models", "Women", "Couples", "Men", "Trans", "Language"].map((chip, index) => (
+        {["Top Creators", "Trending", "New", "Live Now", "Language", "Couples", "Guys", "Trans"].map((chip, index) => (
           <span key={chip} className={cx("rounded-full border px-3 py-1 text-sm", index === 0 ? "border-rose-300/30 bg-rose-400/15" : "border-white/10 bg-white/[0.06]")}>
             {chip}
           </span>
@@ -239,7 +316,7 @@ export function UserHomePage() {
             purpose: "Render discovery, creator cards, favorites, wallet shortcut, and live-room entry.",
             role: "User / Viewer",
             buttons: ["View Profile", "Watch Live", "Favorite", "Wallet"],
-            actions: ["Profile links to /user/model/[id]", "Watch links to /user/live/[id]", "Favorite persists in local state"],
+            actions: ["Profile links to /user/creator/[id]", "Watch links to /user/live/[id]", "Favorite persists in local state"],
             api: ["GET /creators/live", "GET /wallet/balance", "POST /favorites"],
             success: "Cards update favorite state and keep viewer counts/status readable.",
             businessRule: "Age gate must pass before this route is available in production."
@@ -626,7 +703,7 @@ export function UserFavoritesPage() {
                 <Button onClick={() => setAlerts((state) => ({ ...state, [creator.id]: !state[creator.id] }))}>
                   Alerts {alerts[creator.id] ? "On" : "Off"}
                 </Button>
-                <Link className="inline-flex min-h-10 items-center rounded-xl bg-brand-gradient px-4 text-sm font-bold" href={`/user/model/${creator.id}`}>
+                <Link className="inline-flex min-h-10 items-center rounded-xl bg-brand-gradient px-4 text-sm font-bold" href={`/user/creator/${creator.id}`}>
                   Profile
                 </Link>
                 <Button onClick={() => removeFavorite(creator.id)}>Remove</Button>
@@ -645,6 +722,39 @@ export function UserFavoritesPage() {
             buttons: ["Profile", "Alerts", "Remove"],
             actions: ["Profile opens creator page", "Remove updates local favorites", "Alerts toggle notification preference"],
             api: ["GET /favorites", "PATCH /favorites/:id/notifications", "DELETE /favorites/:id"]
+          })}
+        />
+      </div>
+    </UserShell>
+  );
+}
+
+export function UserHistoryPage() {
+  const transactions = useDemoStore((state) => state.transactions);
+
+  return (
+    <UserShell>
+      <PageHeader eyebrow="Viewer history" title="Transaction and activity history" description="Audit wallet recharges, tips, paid unlocks, private show reserves, tickets, group joins, and fan club subscriptions." />
+      <div className="grid gap-5 md:grid-cols-3">
+        <Metric label="Total transactions" value={String(transactions.length)} />
+        <Metric label="Successful payments" value={String(transactions.filter((tx) => tx.status === "success").length)} />
+        <Metric label="Pending reviews" value={String(transactions.filter((tx) => tx.status === "pending").length)} />
+      </div>
+      <div className="mt-6">
+        <AdminTable
+          headers={["Transaction", "Type", "Tokens", "Status", "Created", "Description"]}
+          rows={transactions.map((tx) => [tx.id, tx.type, tx.tokenAmount, tx.status, new Date(tx.createdAt).toLocaleDateString(), tx.description])}
+        />
+      </div>
+      <div className="mt-8">
+        <DeveloperNotes
+          note={note({
+            purpose: "Show viewer transaction and activity history for QA and ledger handoff.",
+            role: "User / Viewer",
+            buttons: ["Type/date/status filters in production", "Transaction row"],
+            actions: ["Read local mock transaction history", "Open transaction detail drawer in production"],
+            api: ["GET /wallet/history", "GET /ledger/:id"],
+            businessRule: "Paid action history must reconcile with immutable wallet ledger records."
           })}
         />
       </div>
@@ -1007,6 +1117,66 @@ export function ModelPricingPage() {
   );
 }
 
+export function ModelAutomationPage() {
+  const addChatMessage = useDemoStore((state) => state.addChatMessage);
+  const [saved, setSaved] = useState("");
+
+  return (
+    <ModelShell>
+      <PageHeader eyebrow="Goals and automation" title="Goals, bots, polls, wheel, and game controls" description="Enable mock automation, add trigger rules, and preview bot messages in the live-room chat state." />
+      <div className="grid gap-6 xl:grid-cols-2">
+        <Card className="space-y-4">
+          <h2 className="text-xl font-bold">Goal / Epic Goal</h2>
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="Community goal" />
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="5000" />
+          <GoalProgress current={1840} target={5000} />
+          <GradientButton onClick={() => setSaved("Goal saved and published to viewer live room.")}>Save goal</GradientButton>
+        </Card>
+        <Card className="space-y-4">
+          <h2 className="text-xl font-bold">Bots and trigger rules</h2>
+          {["Welcome Bot", "Tip Reaction Bot", "Announcement Bot"].map((bot) => (
+            <label key={bot} className="flex items-center justify-between rounded-xl bg-white/[0.045] p-3">
+              <span>{bot}</span>
+              <input type="checkbox" defaultChecked />
+            </label>
+          ))}
+          <input className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="Trigger: every 5 minutes" />
+          <GradientButton
+            onClick={() => {
+              addChatMessage("Automation preview: welcome and tip reaction bots are active.", "Automation Bot", true);
+              setSaved("Bot trigger saved and preview message added to chat.");
+            }}
+          >
+            Preview bot message
+          </GradientButton>
+        </Card>
+        <Card className="space-y-4 xl:col-span-2">
+          <h2 className="text-xl font-bold">Polls and wheel/game</h2>
+          <div className="grid gap-3 md:grid-cols-3">
+            <input className="min-h-12 rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="Poll: choose next theme" />
+            <input className="min-h-12 rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="Wheel options: A, B, C" />
+            <input className="min-h-12 rounded-xl border border-white/10 bg-white/[0.06] px-3 outline-none" defaultValue="15 tokens" />
+          </div>
+          <Button onClick={() => setSaved("Poll/wheel interaction published to mock live room.")}>Publish interaction</Button>
+        </Card>
+      </div>
+      {saved ? <div className="mt-5"><SuccessState title="Automation state" message={saved} /></div> : null}
+      <div className="mt-8">
+        <DeveloperNotes
+          note={note({
+            purpose: "Configure creator goals, bots, announcement triggers, polls, wheel/game controls.",
+            role: "Model / Creator",
+            buttons: ["Save goal", "Preview bot message", "Publish interaction"],
+            actions: ["Toggle bots", "Save trigger rules", "Preview chat bot output", "Publish paid interaction"],
+            api: ["PATCH /goals", "PATCH /bots", "POST /interactions/games"],
+            businessRule: "Automation messages must respect chat moderation, cooldowns, and room rules."
+          })}
+        />
+      </div>
+    </ModelShell>
+  );
+}
+
 export function ModelEarningsPage() {
   const payoutStatus = useDemoStore((state) => state.payoutStatus);
   const requestPayout = useDemoStore((state) => state.requestPayout);
@@ -1336,7 +1506,7 @@ export function PrototypeMapPage() {
     },
     {
       title: "Admin flow",
-      nodes: ["Dashboard", "Users", "Models / KYC", "Token Ledger", "Payments / Payouts", "Moderation", "Analytics"]
+      nodes: ["Dashboard", "Users", "Creators / KYC", "Token Ledger", "Payments / Payouts", "Moderation", "Analytics"]
     }
   ];
   return (
@@ -1347,17 +1517,7 @@ export function PrototypeMapPage() {
         </PageHeader>
         <div className="grid gap-5 lg:grid-cols-3">
           {lanes.map((lane) => (
-            <Card key={lane.title}>
-              <h2 className="text-xl font-black">{lane.title}</h2>
-              <div className="mt-5 space-y-3">
-                {lane.nodes.map((node) => (
-                  <div key={node} className="flex items-center justify-between rounded-xl bg-white/[0.045] p-3">
-                    <span>{node}</span>
-                    <span className="text-amber-200">→</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
+            <PrototypeFlowCard key={lane.title} title={lane.title} nodes={lane.nodes} />
           ))}
         </div>
         <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -1374,6 +1534,35 @@ export function PrototypeMapPage() {
               {item}
             </Card>
           ))}
+        </div>
+        <div className="mt-8">
+          <h2 className="mb-4 text-2xl font-black">Visible state screen checklist</h2>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {[
+              "Loading",
+              "Empty",
+              "Success",
+              "Error",
+              "Insufficient tokens",
+              "Payment failed",
+              "Payment success",
+              "Payment pending",
+              "Payment verification pending",
+              "KYC pending",
+              "KYC rejected",
+              "KYC approved",
+              "Creator offline",
+              "Creator busy/private",
+              "Chat permission blocked",
+              "User banned",
+              "Payout below threshold",
+              "Payout processing",
+              "Payout approved",
+              "Report submitted"
+            ].map((state) => (
+              <Card key={state} className="text-sm font-semibold text-white/75">{state}</Card>
+            ))}
+          </div>
         </div>
       </div>
     </main>

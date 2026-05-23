@@ -1,8 +1,10 @@
 import type { TokenPackage } from "@/types";
 
 export const tokenPackages: TokenPackage[] = [
-  { id: "starter", label: "Starter", tokens: 80, price: "$7.99" },
-  { id: "popular", label: "Popular", tokens: 240, price: "$19.99", highlight: true },
-  { id: "pro", label: "Creator Fan", tokens: 620, price: "$49.99" },
-  { id: "premium", label: "Premium", tokens: 1400, price: "$99.99" }
+  { id: "tokens-50", label: "Starter", tokens: 50, price: "$4.99" },
+  { id: "tokens-100", label: "Basic", tokens: 100, price: "$8.99" },
+  { id: "tokens-250", label: "Popular", tokens: 250, price: "$19.99", highlight: true },
+  { id: "tokens-500", label: "Plus", tokens: 500, price: "$37.99" },
+  { id: "tokens-1000", label: "Premium", tokens: 1000, price: "$69.99" },
+  { id: "tokens-2500", label: "Boss Demo", tokens: 2500, price: "$149.99" }
 ];

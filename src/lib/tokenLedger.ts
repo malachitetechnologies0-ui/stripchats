@@ -7,6 +7,7 @@ export function createTransaction(data: {
   type: TransactionType;
   userId: string;
   modelId?: string;
+  creatorId?: string;
   tokenAmount: number;
   status?: Transaction["status"];
   description: string;
@@ -16,6 +17,7 @@ export function createTransaction(data: {
     type: data.type,
     userId: data.userId,
     modelId: data.modelId,
+    creatorId: data.creatorId ?? data.modelId,
     tokenAmount: data.tokenAmount,
     status: data.status ?? "success",
     createdAt: new Date().toISOString(),
@@ -31,6 +33,10 @@ export function createTransaction(data: {
 
 export function listTransactions() {
   return ledger;
+}
+
+export function getTransactionHistory(userId: string) {
+  return ledger.filter((item) => item.userId === userId);
 }
 
 export function filterTransactions(type?: TransactionType) {

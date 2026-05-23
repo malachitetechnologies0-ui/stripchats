@@ -255,7 +255,7 @@ export function CreatorCard({ creator }: { creator: Creator }) {
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      <Link href={`/user/model/${creator.id}`}>
+      <Link href={`/user/creator/${creator.id}`}>
         <SafePlaceholder label="Blurred safe creator placeholder" className="h-44 rounded-none border-0" />
       </Link>
       <div className="space-y-4 p-4">
@@ -278,7 +278,7 @@ export function CreatorCard({ creator }: { creator: Creator }) {
           </Button>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <Link className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-sm font-semibold" href={`/user/model/${creator.id}`}>
+              <Link className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-sm font-semibold" href={`/user/creator/${creator.id}`}>
             View Profile
           </Link>
           <Link className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-brand-gradient text-sm font-bold" href={`/user/live/${creator.id}`}>
@@ -847,6 +847,22 @@ export function RoleCard({
         Open Demo <ChevronRight size={16} />
       </Link>
     </motion.div>
+  );
+}
+
+export function PrototypeFlowCard({ title, nodes }: { title: string; nodes: string[] }) {
+  return (
+    <Card>
+      <h2 className="text-xl font-black">{title}</h2>
+      <div className="mt-5 space-y-3">
+        {nodes.map((node) => (
+          <div key={node} className="flex items-center justify-between rounded-xl bg-white/[0.045] p-3">
+            <span>{node}</span>
+            <span className="text-amber-200">&gt;</span>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
 

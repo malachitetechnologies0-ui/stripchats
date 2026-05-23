@@ -1,8 +1,8 @@
 {
-  "name": "stripchats",
+  "name": "creatorlive-demo",
   "version": "1.0.0",
   "private": true,
-  "description": "Safe dark-theme creator marketplace wireframe and clickable prototype demo.",
+  "description": "Safe CreatorLive live marketplace wireframe and clickable prototype demo.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

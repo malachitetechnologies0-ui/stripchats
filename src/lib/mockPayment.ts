@@ -31,15 +31,15 @@ export function handleMockPayment(
   };
 }
 
-export function simulatePaymentSuccess(packageId = "popular", method: PaymentMethod = "card") {
+export function simulatePaymentSuccess(packageId = "tokens-250", method: PaymentMethod = "card") {
   return handleMockPayment(packageId, method, "success");
 }
 
-export function simulatePaymentFailure(packageId = "popular", method: PaymentMethod = "card") {
+export function simulatePaymentFailure(packageId = "tokens-250", method: PaymentMethod = "card") {
   return handleMockPayment(packageId, method, "failed");
 }
 
-export function simulatePaymentPending(packageId = "popular", method: PaymentMethod = "card") {
+export function simulatePaymentPending(packageId = "tokens-250", method: PaymentMethod = "card") {
   return handleMockPayment(packageId, method, "pending");
 }
 

@@ -2,7 +2,7 @@ import type { AdminStat } from "@/types";
 
 export const adminStats: AdminStat[] = [
   { label: "Total users", value: "482k", tone: "default" },
-  { label: "Active models", value: "8,420", tone: "success" },
+  { label: "Active creators", value: "8,420", tone: "success" },
   { label: "Live rooms", value: "1,240", tone: "success" },
   { label: "Tokens sold", value: "92M", tone: "default" },
   { label: "Revenue", value: "$1.84M", tone: "default" },
